@@ -1,0 +1,19 @@
+{
+  "name": "hw8-liangweizhao927",
+  "version": "1.1.4",
+  "private": true,
+  "main": "server.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "request": "latest",
+    "express": "latest",
+    "spotify-web-api-node": "latest",
+    "ngeohash": "latest"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

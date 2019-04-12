@@ -1,0 +1,1395 @@
+<!DOCTYPE html><html lang="en" ng-app="searchApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+    <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-svg-round-progressbar/0.4.8/roundProgress.min.js"></script>
+    <script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <title>HW8-LiangweiZhao</title>
+    <style type="text/css">
+        body{
+            transition-delay: 1s;
+        }
+        div{
+            transition: all 2s;
+        }
+        input.ng-touched:invalid {
+            border: 2px solid red;
+        }
+        .nav-link, .nav-link.active{
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+        .selected {
+            background-color:#F7DDA2;
+        }
+        .row{
+            padding-top: 20px;
+        }
+        md-autocomplete md-progress-linear {display: none; }
+        .ng-hide.ng-hide-animate{
+            display: none !important;
+        }
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+            src: local('Material Icons'),
+            local('MaterialIcons-Regular'),
+            url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+            url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+            url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+        }
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;  /* Preferred icon size */
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            /* Support for all WebKit browsers. */
+            -webkit-font-smoothing: antialiased;
+            /* Support for Safari and Chrome. */
+            text-rendering: optimizeLegibility;
+            /* Support for Firefox. */
+            -moz-osx-font-smoothing: grayscale;
+            /* Support for IE. */
+            font-feature-settings: 'liga';
+        }
+        i.icon-yellow {
+            color: #F5D857;
+        }
+        .btn-group.btn-group-toggle .btn.btn-secondary{
+            background-color: white;
+            color: black;
+            border: 0;
+        }
+        .btn-group.btn-group-toggle .btn.btn-secondary:hover{
+            border: 1px solid #C6C6C6;
+            border-bottom: 0;
+        }
+        .btn-group.btn-group-toggle .btn.btn-secondary:focus{
+            border: 1px solid #F6F6F6;
+            border-bottom: 0;
+        }
+        .partsOfDtl .row{
+            border-top: 1px solid #C6C6C6;
+        }
+        .artistInUpEves{
+            float: left;
+            color: #D67B65;
+        }
+        .timeInUpEves{
+            color: #939393;
+        }
+        md-autocomplete{
+            z-index: 10;
+            overflow: hidden;
+            border: 1px solid #ced4da;
+            border-radius:5px;
+        }
+        md-autocomplete-wrap .ng-touched:invalid,md-autocomplete .ng-touched:invalid {
+            border:2px solid red;
+            border-bottom: 4px solid red;
+        }
+        .tooltip-inner {
+            background-color: #00cc00;
+        }
+        .tooltip.bs-tooltip-bottom .arrow:before {
+            border-right-color: #00cc00 !important;
+        }
+        /* Animate */
+        .animate-show,
+        .animate-hide {
+            transition:all linear 0.5s;
+        }
+
+        .animate-show.ng-hide-remove,
+        .animate-hide.ng-hide-add.ng-hide-add-active {
+            height: 0;
+            opacity: 0;
+            display: block !important;
+        }
+
+        .animate-hide.ng-hide-add,
+        .animate-show.ng-hide-remove.ng-hide-remove-active {
+            height: 94px;
+            opacity: 1;
+            display: block !important;
+        }
+        .slidein {
+            animation-duration: 1s;
+            animation-name: dtlSlidein;
+            position: relative;
+            animation-fill-mode: forwards;
+        }
+        .evesSlidein{
+            animation-duration: 1s;
+            animation-name: evesSlidein;
+            position: relative;
+            animation-fill-mode: forwards;
+        }
+        @keyframes dtlSlidein {
+            from {
+                left: -100%;
+            }
+
+            to {
+                left: 0;
+            }
+        }
+        @keyframes evesSlidein {
+            from {
+                right: -100%;
+            }
+
+            to {
+                right: 0;
+            }
+        }
+    </style>
+</head>
+<body ng-controller="formInfo" ng-init="" ng-cloak>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <form class="form-control" style="background: #F6F6F6; padding-right:20px;padding-left:20px;" name="searchForm">
+            <!-- Head Title -->
+            <div class="row"><div class="col-md-12" align="center" style="font-weight: bold;font-size: 20px;">Entertainment Event Ticket Search</div></div>
+            <!-- keyword -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-2">Keyword <span style="color: red; ">*</span></div>
+                <div class="col-md-6" ng-init="kStart=false;keyword=''">
+                    <md-autocomplete
+                            required
+                            md-input-name="keyword"
+                            md-no-cache="false"
+                            md-search-text="keyword"
+                            md-items="item in query(keyword)"
+                            md-item-text="item.name"
+                            md-clear-button="false"
+                            md-delay="1000"
+                            placeholder="Enter Artist, Team or Event Name (eg. Lakers)">
+                        <md-item-template>
+                            <span md-highlight-text="formInfo.keyword">{{item.name}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+                    <div ng-messages="searchForm.keyword.$error" ng-show="searchForm.keyword.$touched">
+                        <div ng-message="required" style="color:red">Please enter a keyword.</div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <!-- Category -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-2">Category</div>
+                <div class="col-md-3">
+                    <select name="kinds" class="custom-select" ng-init="kinds=''" ng-model="kinds">
+                        <option value="" selected>All</option>
+                        <option value="KZFzniwnSyZfZ7v7nJ">Music</option>
+                        <option value="KZFzniwnSyZfZ7v7nE">Sports</option>
+                        <option value="KZFzniwnSyZfZ7v7na">Art & Theatre</option>
+                        <option value="KZFzniwnSyZfZ7v7nn">Film</option>
+                        <option value="KZFzniwnSyZfZ7v7n1">Miscellaneous</option>
+                    </select>
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+            <!-- Distance and Mode -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-2">Distance</div>
+                <div class="col-md-3"><input class="form-control" type="text" ng-init="distance=''" ng-model="distance" name="distance" placeholder="10" style="width: 100%"></div>
+                <div class="col-md-3">
+                    <select name="mode" class="custom-select" ng-model = "mode" ng-init="mode='miles'">
+                        <option value="miles">Miles</option>
+                        <option value="km">Kilometers</option>
+                    </select>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <!-- locRadio -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-2 align-self-center">From <span style="color: red; ">*</span></div>
+                <div class="col-md-6" ng-init="here=true;locRad='here'">
+                    <input ng-click="loctxtDis=true;showLoc=false;" ng-model="locRad" ng-checked="here" type="radio" name="locationRadio" value="here" id="here">Current location<br>
+                    <input ng-click="loctxtDis=false;$scope.location=='';" ng-model="locRad" type="radio" name="locationRadio" value="locNeed">Other. Please specify:
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <!-- locTxt -->
+            <div class="row" style="padding-top: 0px;">
+                <div class="col-md-4"></div>
+                <div class="col-md-6" ng-init="loctxtDis=true;showLoc=false;loc=false;">
+                    <input class="form-control" type="text" ng-model="location" name="location" style="width: 98%;margin-left: 14px;" required ng-disabled="loctxtDis" ng-blur="showLoc=true">
+                    <span ng-show="(loc=searchForm.location.$invalid&&!loctxtDis)&&showLoc" style="color: red;margin-left: 14px;">Please enter a location.</span>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <!-- Search and Clear -->
+            <div class="row" style="padding-bottom: 20px;">
+                <div class="col-md-2"></div>
+                <div class="col-md-4" ng-init="search=false">
+                    <button name="search" class="btn btn-primary" id="search" ng-disabled="searchForm.keyword.$invalid||loc" onclick="searchEvents()">
+                        <i class="material-icons md-24" style="float: left;">search</i>Search
+                    </button>
+                    <button name="clear" class="btn btn-outline-secondary" ng-click="clearAll()" style="border-color: #E6E6E6;" id="clear">
+                        <i class="material-icons md-24" style="float: left;">clear_all</i>Clear
+                    </button>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<!-- Results and Favorites-->
+<div class="row justify-content-center">
+    <div class="list-group" ng-init="swcBtn=true" style="width:100px;">
+        <div class="list-group-item active" ng-show="swcBtn" style="border-radius:3px;">Result</div>
+        <div class="list-group-item" ng-click="swcBtn=true;btnCtl=false;" ng-show="!swcBtn" style="border:0;color:#007AFF;">Result</div>
+    </div>
+    <div class="list-group" style="width:100px;">
+        <div class="list-group-item active" ng-show="!swcBtn" style="border-radius:3px;">Favorites</div>
+        <div class="list-group-item" ng-click="swcBtn=false;dtl=false;btnCtl=false;" ng-show="swcBtn" style="border:0;color:#007AFF;">Favorites</div>
+    </div>
+</div>
+<!-- Results -->
+<div ng-init="result0='';dtl=false;star=[]" ng-show="swcBtn&&!dtl" style="padding: 0;">
+    <!-- Error -->
+    <div ng-show="err" style="padding-top:20px;padding-bottom:20px;margin-top:40px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="alert alert-danger" role="alert">Failed to get search results.</div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+    <!-- Progress Bar -->
+    <div ng-show= "search && !result0 && !err" style="padding-top:20px;padding-bottom:20px;margin-top:150px;margin-bottom:300px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+    <div ng-show="!err&&result0&&((result0.data._embedded === undefined)||(result0.data._embedded.events === undefined))" style="padding-top:20px;padding-bottom:20px;margin-top:40px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="alert alert-warning" role="alert">No Records</div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+    <!-- Events List -->
+    <div class="events" ng-class="{'evesSlidein':!dtl&&swcBtn&&btnCtl}" ng-show="!(result0==='')&&!(result0.data._embedded === undefined)&&!(result0.data._embedded.events === undefined)">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8" ng-init="selectedRow=''" style="padding-left:0;padding-right:0;" align="right">
+                <button class="btn btn-outline-secondary" ng-disabled="(selectedRow==='')" ng-click="dtl=true">
+                    Details<i  class="material-icons md-24" style="float:right;">arrow_forward_ios</i>
+                </button>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table id="eve" class="table table-hover">
+                        <!--Header-->
+                        <thead>
+                        <tr>
+                            <th scope="col"><b>#</b></th>
+                            <th scope="col"><b>Date</b></th>
+                            <th scope="col"><b>Event</b></th>
+                            <th scope="col"><b>Category</b></th>
+                            <th scope="col"><b>Venue Info</b></th>
+                            <th scope="col"><b>Favorite</b></th>
+                        </tr>
+                        </thead>
+                        <!--Content-->
+                        <tbody>
+                        <tr ng-repeat="event in result0.data._embedded.events | orderBy: 'dates.start.localDate'" ng-class="{'selected':($index+1) == selectedRow}">
+                            <td><b>{{$index+1}}</b></td>
+                            <td>{{event.dates.start.localDate}}</td>
+                            <td>
+                                <a href="" data-toggle="tooltip" title="{{event.name}}" ng-click="showDetails(event,$index+1)">
+                                    {{(event.name.length)>20? event.name.slice(0,20)+' ...':event.name}}
+                                </a>
+                            </td>
+                            <td>{{event.classifications[0].genre.name+"-"+event.classifications[0].segment.name}}</td>
+                            <td>{{event._embedded.venues[0].name}}</td>
+                            <td>
+                                <button class="btn btn-outline-secondary" ng-show="!star[$index+1]" style="padding: 6px;padding-bottom: 0;" ng-click="toFavorite(event,$index+1)">
+                                    <i class="material-icons md-24">star_border</i></button>
+                                <button class="btn btn-outline-secondary" ng-show="star[$index+1]" style="padding: 6px;padding-bottom: 0;" ng-click="rmFavorite(event.id)">
+                                    <i class="material-icons md-24 icon-yellow">star</i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+<!-- Favorite List-->
+<div class="favorite" ng-class="{'evesSlidein':!dtl&&!swcBtn&&btnCtl}" ng-show="!swcBtn&&!dtl" style="padding: 0">
+    <!-- Detail -->
+    <div class="row" ng-show="!($storage.likeList.length === 0)">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="padding-left:0;padding-right:0;" align="right">
+            <button class="btn btn-outline-secondary" ng-disabled="(selectedRow==='')" ng-click="toDetail()">
+                Details<i  class="material-icons md-24" style="float:right;">arrow_forward_ios</i>
+            </button>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <!-- Error Handle-->
+    <div ng-show="$storage.likeList.length === 0" style="padding-top:20px;padding-bottom:20px;margin-top:40px;">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="alert alert-warning" role="alert">No Records</div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+    <div ng-show="!($storage.likeList.length === 0)" class="events">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table id="likeEve" class="table table-hover">
+                        <!--Header-->
+                        <thead>
+                        <tr>
+                            <th scope="col"><b>#</b></th>
+                            <th scope="col"><b>Date</b></th>
+                            <th scope="col"><b>Event</b></th>
+                            <th scope="col"><b>Category</b></th>
+                            <th scope="col"><b>Venue Info</b></th>
+                            <th scope="col"><b>Favorite</b></th>
+                        </tr>
+                        </thead>
+                        <!--Content-->
+                        <tbody class="favoriteContent">
+                        <tr ng-repeat="event in $storage.likeList"  ng-class="{'selected':(-($index+1)) == selectedRow}">
+                            <td><b>{{$index+1}}</b></td>
+                            <td>{{event.dates.start.localDate}}</td>
+                            <td>
+                                <a href="" data-toggle="tooltip" title="{{event.name}}" ng-click="showDetails(event,$index+1)">
+                                    {{(event.name.length)>20? event.name.slice(0,20)+' ...':event.name}}
+                                </a>
+                            </td>
+                            <td>{{event.classifications[0].genre.name+"-"+event.classifications[0].segment.name}}</td>
+                            <td>{{event._embedded.venues[0].name}}</td>
+                            <td>
+                                <button class="btn btn-outline-secondary" style="padding: 6px;padding-bottom:0;" ng-click="rmFavorite(event.id)">
+                                    <i class="material-icons md-24">delete</i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+<!-- Event Details -->
+<div class="dtlClass" ng-class="{'slidein':dtl}" ng-show="dtl" ng-init="eveDtl='';upEves='';arts='';imgs=[];showLess=false;eveDtlIndex=0;thisEvent='';">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <!-- Event Name -->
+            <h1 align="center" style="margin-top:40px;font-size:20px;">{{eveDtl.name}}</h1>
+            <!-- Back list & Twitter & Favorite Sign -->
+
+            <!-- Back List -->
+            <button class="btn btn-outline-secondary" ng-click="backToList()" style="height:40px;width:80px;float:left;"><i class="material-icons md-24" style="float:left;">arrow_back_ios</i>List</button>
+            <!-- Favorite Sign -->
+            <button ng-disabled="!eveDtl&&!upEves" class="btn btn-outline-secondary" ng-show="!star[eveDtlIndex]&&(result0||!dtl)&&(!dtl||swcBtn)" style="padding: 6px;padding-bottom: 0;width: 40px;height: 40px;float:right;" ng-click="toFavorite(thisEvent,eveDtlIndex)"><i class="material-icons md-24">star_border</i></button>
+            <button ng-disabled="!eveDtl&&!upEves" class="btn btn-outline-secondary" ng-show="star[eveDtlIndex]||(!result0&&dtl)||(dtl&&!swcBtn)" style="padding: 6px;padding-bottom: 0;width: 40px;height: 40px;float: right;" ng-click="rmFavorite(eveDtl.id)"><i class="material-icons md-24 icon-yellow">star</i></button>
+            <!-- Twitter -->
+            <a ng-disabled="!eveDtl&&!upEves" ng-href="https://twitter.com/intent/tweet?text=Check out {{eveDtl.name}} located at {{eveDtl._embedded.venues[0].name}}: {{eveDtl.url}} %23CSCI571EventSearch" target="_blank">
+                <img style="display: inline-block;width:40px;margin-right:10px;float:right;" src="http://csci571.com/hw/hw8/Images/Twitter.png">
+            </a>
+
+            <div style="clear:both;"></div>
+            <!-- Click Events' Radio -->
+            <div class="row" style="padding-top:5px;">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs justify-content-end" ng-init="option1=true;option2=false;option3=false;option4=false;">
+                        <li class="nav-item">
+                            <a ng-show="option1" class="nav-link active" href="">Event</a>
+                            <a ng-show="!option1" class="nav-link" href="" ng-click="option1=true;option2=false;option3=false;option4=false;">Event</a>
+                        </li>
+                        <li class="nav-item">
+                            <a ng-show="option2" class="nav-link active" href="">Artist/Teams</a>
+                            <a ng-show="!option2" class="nav-link" href="" ng-click="option1=false;option2=true;option3=false;option4=false;">Artist/Teams</a>
+                        </li>
+                        <li class="nav-item">
+                            <a ng-show="option3" class="nav-link active" href="">Venue</a>
+                            <a ng-show="!option3" class="nav-link" href="" ng-click="option1=false;option2=false;option3=true;option4=false;">Venue</a>
+                        </li>
+                        <li class="nav-item">
+                            <a ng-show="option4" class="nav-link active" href="">UpcomingEvents</a>
+                            <a ng-show="!option4" class="nav-link" href="" ng-click="option1=false;option2=false;option3=false;option4=true;">UpcomingEvents</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <!-- Progress Bar -->
+    <div ng-show="eveDtl===''">
+        <div class="row" style="border:0;padding-top:20px;padding-bottom:20px;margin-top:150px;margin-bottom:300px;">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+    <div class="row" ng-show="eveDtl" style="transition-delay:1s;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <!-- Each Part of Event Details -->
+            <div class="partsOfDtl" ng-show="!(eveDtl._embedded===undefined)" ng-init="colorSwc=true" style="padding-top:20px;">
+                <!-- Event -->
+                <div ng-show="option1" class="option1">
+                    <!-- Error Handle -->
+                    <div ng-show="(eveDtl._embedded===undefined)">
+                        <div class="col-md-12">
+                            <div class="alert alert-warning" role="alert">No Records</div>
+                        </div>
+                    </div>
+                    <table class="table table-striped">
+                        <!-- Artist/Team(s) -->
+                        <tr ng-if="!(eveDtl._embedded.attractions===undefined)">
+                            <td class="align-middle"><b>Artist/Team(s)</b></td>
+                            <td><div style="display:inline-block;" ng-repeat="atrc in eveDtl._embedded.attractions">{{($index>0)? '| ':''}}{{atrc.name}}&nbsp</div></td>
+                        </tr>
+                        <!-- Venue -->
+                        <tr ng-if="!(eveDtl._embedded.venues===undefined)">
+                            <td><b>Venue</b></td>
+                            <td>{{eveDtl._embedded.venues[0].name}}</td>
+                        </tr>
+                        <!-- Time -->
+                        <tr ng-if="!(eveDtl.dates.start===undefined)&&!(eveDtl.dates.start.localTime===undefined)&&!(eveDtl.dates.start.dateTime===undefined)">
+                            <td><b>Time</b></td>
+                            <td>{{eveDtl.dates.start.dateTime | date:'MMM d, y H:mm:ss'}}</td>
+                        </tr>
+                        <tr ng-if="!(eveDtl.dates.start===undefined)&&(eveDtl.dates.start.localTime===undefined) && !(eveDtl.dates.start.localDate===undefined)">
+                            <td><b>Time</b></td>
+                            <td>{{eveDtl.dates.start.localDate | date:'MMM d, y'}}</td>
+                        </tr>
+                        <!-- Category -->
+                        <tr ng-if="!(eveDtl.classifications===undefined)&&!(eveDtl.classifications[0].segment===undefined) && (eveDtl.classifications[0].genre===undefined)">
+                            <td><b>Category</b></td>
+                            <td>{{eveDtl.classifications[0].segment.name}}</td>
+                        </tr>
+                        <tr ng-if="!(eveDtl.classifications===undefined)&&(eveDtl.classifications[0].segment===undefined) && !(eveDtl.classifications[0].genre===undefined)">
+                            <td><b>Category</b></td>
+                            <td>{{eveDtl.classifications[0].genre.name}}</td>
+                        </tr>
+                        <tr ng-if="!(eveDtl.classifications===undefined)&&!(eveDtl.classifications[0].segment===undefined) && !(eveDtl.classifications[0].genre===undefined)">
+                            <td><b>Category</b></td>
+                            <td>{{eveDtl.classifications[0].segment.name}} | {{eveDtl.classifications[0].genre.name}}</td>
+                        </tr>
+                        <!-- Price Range -->
+                        <tr ng-if="!(eveDtl.priceRanges===undefined)&&eveDtl.priceRanges[0].min===undefined || eveDtl.priceRanges[0].min==='Undefined'">
+                            <td><b>Price Range</b></td>
+                            <td>${{eveDtl.priceRanges[0].max}}</td>
+                        </tr>
+                        <tr ng-if="!(eveDtl.priceRanges===undefined)&&eveDtl.priceRanges[0].max===undefined || eveDtl.priceRanges[0].max==='Undefined'">
+                            <td><b>Price Range</b></td>
+                            <td>${{eveDtl.priceRanges[0].min}}</td>
+                        </tr>
+                        <tr ng-if="!(eveDtl.priceRanges===undefined)&&!(eveDtl.priceRanges[0].min===undefined)&&!(eveDtl.priceRanges[0].max===undefined)">
+                            <td><b>Price Range</b></td>
+                            <td>${{eveDtl.priceRanges[0].min}} ~ ${{eveDtl.priceRanges[0].max}}</td>
+                        </tr>
+                        <!-- Ticket Status -->
+                        <tr ng-if="!(eveDtl.dates===undefined)&&!(eveDtl.dates.status===undefined)">
+                            <td><b>Ticket Status</b></td>
+                            <td>{{eveDtl.dates.status.code}}</td>
+                        </tr>
+                        <!-- Buy Ticket At -->
+                        <tr ng-if="!(eveDtl.url===undefined)">
+                            <td><b>Buy Ticket At</b></td>
+                            <td><a ng-href="{{eveDtl.url}}" target="_blank">Ticketmaster</a></td>
+                        </tr>
+                        <!-- Seat Map(NEED CHANGE!!!) -->
+                        <tr ng-if="!(eveDtl.seatmap===undefined)&&!(eveDtl.seatmap.staticUrl===undefined)">
+                            <td><b>Seat Map</b></td>
+                            <td><a ng-href="{{eveDtl.seatmap.staticUrl}}" target="_blank">View Seat Map Here</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- Each Part of Artist/Teams -->
+                <div ng-show="option2">
+                    <div ng-show="!(arts.body===undefined)&&!(arts.body.artists===undefined)">
+                        <div ng-repeat="item in arts.body.artists.items | filter:equalName">
+                            <div class="row" style="padding-right:0;padding-left:0;border:0;" align="center">
+                                <div class="col-md-12"><b>{{item.name}}</b></div>
+                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><b>Name</b></td>
+                                    <td>{{item.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Followers</b></td>
+                                    <td>{{item.followers.total | number}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="align-middle"><b>Popularity</b></td>
+                                    <td style="position: relative">
+                                        <round-progress  max="100" current="item.popularity" clockwise="false" radius="20" stroke="3" color="#95AF54"></round-progress>
+                                        <div style="position: absolute;top: 48%;left: 0;transform: translateY(-50%);-webkit-transform: translateY(-50%);text-align:left;width:100%;z-index: 1;padding-left:22px;">{{item.popularity}}</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Check At</b></td>
+                                    <td><a ng-href="{{item.external_urls.spotify}}" target="_blank">Spotify</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div ng-show="!(imgs.length===0)">
+                        <div ng-repeat="mainChar in imgs">
+                            <div ng-show="(arts.body===undefined)||(arts.body.artists===undefined)">
+                                <div class="row" style="border:0;padding-top:10px;">
+                                    <div class="col-md-12" align="center"><b>{{mainChar.name}}</b></div>
+                                </div>
+                            </div>
+                            <div class="card-columns" style="border:0;">
+                                <div class="card" ng-repeat="img in mainChar.data.items" style="padding-right:0;">
+                                    <div style="padding:5px;"><a ng-href="{{img.link}}" target="_blank"><img style="display:inline-block;width:100%;" src="{{img.link}}"></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Each Part of Venue -->
+                <div ng-show="option3">
+                    <!-- If no Venue Info -->
+                    <div ng-show="(eveDtl._embedded.venues===undefined)" style="border:0;padding-top:20px;padding-bottom:20px;margin-top:40px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-warning" role="alert">No Records</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="!(eveDtl._embedded.venues===undefined)">
+                        <!-- Venue Name -->
+                        <div class="row" style="border:0;padding-top:0;">
+                            <div class="col-md-12" align="center"><b>{{eveDtl._embedded.venues[0].name}}</b></div>
+                        </div>
+                        <table class="table table-striped">
+                            <tbody>
+                            <!-- Adress -->
+                            <tr ng-if="!(eveDtl._embedded.venues[0].address===undefined)&&!(eveDtl._embedded.venues[0].address.line1===undefined)">
+                                <td class="align-middle"><b>Address</b></td>
+                                <td>{{eveDtl._embedded.venues[0].address.line1}}</td>
+                            </tr>
+                            <!-- City -->
+                            <tr ng-if="!(eveDtl._embedded.venues[0].city===undefined)">
+                                <td><b>City</b></td>
+                                <td>
+                                    {{(eveDtl._embedded.venues[0].state===undefined)? eveDtl._embedded.venues[0].city.name:eveDtl._embedded.venues[0].city.name+' , '+eveDtl._embedded.venues[0].state.name}}
+                                </td>
+                            </tr>
+                            <!-- Phone Number -->
+                            <tr ng-if="!(eveDtl._embedded.venues[0].boxOfficeInfo===undefined)&&!(eveDtl._embedded.venues[0].boxOfficeInfo.phoneNumberDetail===undefined)">
+                                <td><b>Phone Number</b></td>
+                                <td>{{eveDtl._embedded.venues[0].boxOfficeInfo.phoneNumberDetail}}</td>
+                            </tr>
+                            <!-- Open Hours -->
+                            <tr ng-if="!(eveDtl._embedded.venues[0].boxOfficeInfo===undefined)&&!(eveDtl._embedded.venues[0].boxOfficeInfo.openHoursDetail===undefined)">
+                                <td class="align-middle"><b>Open Hours</b></td>
+                                <td>{{eveDtl._embedded.venues[0].boxOfficeInfo.openHoursDetail}}</td>
+                            </tr>
+                            <!-- General Rule -->
+                            <tr ng-if="!(eveDtl._embedded.venues[0].generalInfo===undefined)&&!(eveDtl._embedded.venues[0].generalInfo.generalRule===undefined)">
+                                <td class="align-middle"><b>General Rule</b></td>
+                                <td>{{eveDtl._embedded.venues[0].generalInfo.generalRule}}</td>
+                            </tr>
+                            <!-- Child Rule -->
+                            <tr ng-if="!(eveDtl._embedded.venues[0].generalInfo===undefined)&&!(eveDtl._embedded.venues[0].generalInfo.childRule===undefined)">
+                                <td class="align-middle"><b>Child Rule</b></td>
+                                <td>{{eveDtl._embedded.venues[0].generalInfo.childRule}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- Google Map Here -->
+                        <div class="row" id="map" style="height:300px;margin-top:10px;margin-bottom:30px;"></div>
+                    </div>
+                </div>
+                <!-- Each Part of UpcomingEvents -->
+                <div class="upComingEves" ng-show="option4">
+                    <!-- Error Handle -->
+                    <div ng-show="upEves===''">
+                        <div class="row" style="border:0;padding-top:20px;padding-bottom:20px;margin-top:150px;margin-bottom:300px;">
+                            <div class="col-md-12">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="(!(upEves===''))&&((upEves.resultsPage.results===undefined)||(upEves.resultsPage.results.event===undefined)||(upEves.resultsPage.results.event.length===0))">
+                        <div class="row" style="border:0;padding-top:20px;padding-bottom:20px;margin-top:40px;">
+                            <div class="col-md-12">
+                                <div class="alert alert-warning" role="alert">No Records</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div ng-show="!(upEves.resultsPage.results===undefined)&&!(upEves.resultsPage.results.event===undefined)">
+                        <!-- Select Control List -->
+                        <div class="row" style="border: 0;padding-top:0;">
+                            <div class="col-md-6">
+                                <div class="row" style="border: 0;">
+                                    <div class="col-md-6">
+                                        <select class="custom-select" ng-model="orderByX" ng-init="orderByX='default'">
+                                            <option value="default" selected>Default</option>
+                                            <option value="eventName">Event Name</option>
+                                            <option value="time">Time</option>
+                                            <option value="artist">Artist</option>
+                                            <option value="type">Type</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select class="custom-select" ng-disabled="orderByX==='default'" ng-init="orderMode='ascending'" ng-model="orderMode">
+                                            <option value="ascending" selected>Ascending</option>
+                                            <option value="descending">Descending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6"></div>
+                        </div>
+                        <!-- Coming Events Part -->
+                        <!-- Ascending -->
+                        <div ng-show="orderMode==='ascending'">
+                            <!-- Default -->
+                            <div ng-show="orderByX==='default'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="showLess" class="animate-show animate-hide" ng-repeat="upEve in upEves.resultsPage.results.event | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Event Name -->
+                            <div ng-show="orderByX==='eventName'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'displayName' | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="showLess" class="animate-show animate-hide" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'displayName' | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Time -->
+                            <div ng-show="orderByX==='time'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'start.date' | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-show="showLess" class="animate-show animate-hide" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'start.date' | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Artist -->
+                            <div ng-show="orderByX==='artist'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'performance[0].displayName' | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate-show animate-hide" ng-show="showLess" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'performance[0].displayName' | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Type -->
+                            <div ng-show="orderByX==='type'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'type' | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate-show animate-hide" ng-show="showLess" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'type' | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Descending -->
+                        <div ng-show="orderMode==='descending'">
+                            <!-- Default -->
+                            <div ng-show="orderByX==='default'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate-show animate-hide" ng-show="showLess" ng-repeat="upEve in upEves.resultsPage.results.event | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Event Name -->
+                            <div ng-show="orderByX==='eventName'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'displayName' : true | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate-show animate-hide" ng-show="showLess" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'displayName' : true | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Time -->
+                            <div ng-show="orderByX==='time'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'start.date' : true | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate-show animate-hide" ng-show="showLess" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'start.date' : true | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Artist -->
+                            <div ng-show="orderByX==='artist'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'performance[0].displayName' : true | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate-show animate-hide" ng-show="showLess" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'performance[0].displayName' : true | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Type -->
+                            <div ng-show="orderByX==='type'">
+                                <div ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'type' : true | limitTo:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate-show animate-hide" ng-show="showLess" ng-repeat="upEve in upEves.resultsPage.results.event | orderBy: 'type' : true | limitTo:1000:5">
+                                    <div class="row" style="border: 1px solid #C6C6C6;margin-top:10px;padding-top:10px;padding-bottom:10px;border-radius:5px;">
+                                        <div class="col-md-12"><a ng-href="{{upEve.uri}}" target="_blank"><b>{{upEve.displayName}}</b></a></div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.performance===undefined)" class="artistInUpEves" style="float: left;"><b>Artist: {{upEve.performance[0].displayName}}</b>&nbsp</div>
+                                            <div ng-show="!(upEve.start===undefined)" class="timeInUpEves">
+                                                <div ng-show="!(upEve.start.datetime===undefined)&&!(upEve.start.datetime===null)"><b>{{upEve.start.datetime | date:'MMM d, y H:mm:ss'}}</b></div>
+                                                <div ng-show="(upEve.start.datetime===undefined)||(upEve.start.datetime===null)"><b>{{upEve.start.date | date:'MMM d, y'}}</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div ng-show="!(upEve.type===undefined)" class="typeInUpEves"><b>Type: {{upEve.type}}</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End of Descending -->
+                        <div align="center" ng-show="!showLess" style="margin-top: 30px;margin-bottom: 20px;" ><button ng-click="showLess=!showLess" class="btn btn-primary">Show More</button></div>
+                        <div align="center" ng-show="showLess" style="margin-top: 30px;margin-bottom: 20px;" ><button ng-click="showLess=!showLess" class="btn btn-primary">Show Less</button></div>
+                    </div>
+                </div><!-- End of Option4 -->
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+<script>
+    var app = angular.module('searchApp',['angular-svg-round-progressbar','ngStorage','ngAnimate','ngMaterial','ngMessages']);
+    var curIP_lat;
+    var curIP_lon;
+    $.ajax({
+        url: "http://ip-api.com/json",
+        type: "GET",
+        dataType: 'json',
+        async: true,
+        success: function (res) {
+            curIP_lat = res.lat;
+            curIP_lon = res.lon;
+        }
+    });
+    app.controller('formInfo',function ($scope,$http,$localStorage) {
+        $scope.$storage = $localStorage.$default({
+            likeList : []
+        });
+        $scope.err = "";
+        searchEvents = function () {
+            //Search Form Part
+            $scope.search = true;
+            $scope.dtl = false;
+            $scope.selectedRow = '';
+            $scope.swcBtn = true;
+            $scope.result0 = "";
+            $scope.btnCtl = false;
+            $scope.err = "";
+            //Event Detial
+            $scope.upEves = "";
+            $scope.eveDtl = "";
+            $scope.star = [];
+            $scope.imgs = [];
+            $scope.star.push(true);
+            $scope.option1=true;$scope.option2=false;
+            $scope.option3=false;$scope.option4=false;
+            $scope.arts = '';
+            //Ajax
+            if($scope.locRad === 'locNeed') {
+                var req0 = {
+                    method: "GET",
+                    //url: "http://www-scf.usc.edu/~liangwez/HW8/locIP",
+                    url: "/locIP",
+                    params:{
+                        'location': $scope.location,
+                        'key': 'YOUR_KEY'
+                    }
+                };
+                $http(req0).then(function (response) {
+                    curIP_lat = response.data.results[0].geometry.location.lat;
+                    curIP_lon = response.data.results[0].geometry.location.lng;
+                    var dists = $scope.distance === '' ? 10 : $scope.distance;
+                    var req = {
+                        method: "GET",
+                        url: "/events.json",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        params: {
+                            'keyword': $scope.keyword,
+                            'segmentId': $scope.kinds,
+                            'apikey': "YOUR_KEY",
+                            'radius': dists,
+                            'lat': curIP_lat,
+                            'lon': curIP_lon,
+                            'unit': $scope.mode
+                        }
+                    };
+                    $http(req).then(function (response) {
+                        $scope.result0 = response;
+                        if ($scope.result0.data._embedded != null || !($scope.result0.data._embedded === undefined)) {
+                            var list = $scope.result0.data._embedded.events;
+                            list.sort(function (a, b) {
+                                return (a.dates.start.localDate < b.dates.start.localDate) ? -1 : 1;
+                            });
+                            for (var i = 0; i < list.length; i++) {
+                                if ($scope.readCache(list[i].id))
+                                    $scope.star.push(true);
+                                else
+                                    $scope.star.push(false);
+                            }
+                        }
+                    },function () {
+                        $scope.err = true;
+                    });
+                });
+            }
+            else {
+                var dists = $scope.distance === '' ? 10 : $scope.distance;
+                var req = {
+                    method: "GET",
+                    url: "/events.json",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    params: {
+                        'keyword': $scope.keyword,
+                        'segmentId': $scope.kinds,
+                        'apikey': "YOUR_KEY",
+                        'radius': dists,
+                        'lat': curIP_lat,
+                        'lon': curIP_lon,
+                        'unit': $scope.mode
+                    }
+                };
+                $http(req).then(function (response) {
+                    $scope.result0 = response;
+                    if ($scope.result0.data._embedded != null || !($scope.result0.data._embedded === undefined)) {
+                        var list = $scope.result0.data._embedded.events;
+                        list.sort(function (a, b) {
+                            return (a.dates.start.localDate < b.dates.start.localDate) ? -1 : 1;
+                        });
+                        console.log(list);
+                        for (var i = 0; i < list.length; i++) {
+                            if ($scope.readCache(list[i].id))
+                                $scope.star.push(true);
+                            else
+                                $scope.star.push(false);
+                        }
+                    }
+                },function () {
+                    $scope.err = true;
+                });
+            }
+        };
+        $scope.showDetails = function(event,oriIndex){
+            var eventId = event.id;
+            $scope.eveDtl = '';
+            $scope.selectedRow = ($scope.swcBtn===false)? -oriIndex : oriIndex;
+            $scope.thisEvent = event;
+            $scope.dtl = true;
+            $scope.eveDtlIndex = oriIndex;
+            $scope.imgs = [];
+            $scope.arts = [];
+            if(!(eventId === undefined)){
+                var req = {
+                    method: "GET",
+                    url: "/details",
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    params: {
+                        'eventId' : eventId,
+                        'apikey': "YOUR_KEY"
+                    }
+                };
+                $http(req).then(function (response) {
+                    console.log(response.data);
+                    if(response.status === 200 && !(response.data === (null || undefined))){
+                        $scope.eveDtl = response.data;
+                        $scope.getVenueMap();
+                        if(!(response.data._embedded===undefined)&&!(response.data._embedded.attractions===undefined)){
+                            var number = response.data._embedded.attractions.length;
+                            for(var num = 0; num < number; num++){
+                                $scope.getArtist(num);
+                                $scope.getImg(num);
+                            }
+                        }
+                        $scope.getUpEves();
+                    }
+                },function () {
+                    $scope.err = true;
+                });
+            }
+        };
+        initMap =function(latVal,lonVal){
+            // The location of place
+            var place = {lat: latVal, lng: lonVal};
+            // The map, centered at place
+            var map = new google.maps.Map(document.getElementById('map'), {zoom: 14, center: place});
+            // The marker, positioned at place
+            var marker = new google.maps.Marker({position: place, map: map});
+            console.log("map ready");
+            console.log(map);
+        };
+        $scope.clearAll = function(){
+            // Form Data
+            $scope.keyword = ''; $scope.kStart = false; $scope.kinds = ''; $scope.distance = ''; $scope.mode = 'miles';
+            $scope.locRad = 'here'; $scope.loctxtDis = true; $scope.showLoc = false; $scope.loc = false; $scope.location = '';
+            $scope.swcBtn = true; $scope.selectedRow = ''; $scope.search = false; $scope.imgs = [];$scope.btnCtl = false;
+            $scope.err = '';
+            // Events list
+            $scope.result0 = ''; $scope.star = []; $scope.arts = '';
+            $scope.dtl = false;
+            // Details Part
+            $scope.eveDtl = ''; $scope.option1 = true; $scope.option2 = false; $scope.option3 = false; $scope.option4 = false;
+            upEves = ''; orderMode = 'ascending'; orderByX = 'default'; showLess = false;
+        };
+        $scope.getArtist = function(num){
+            if(!($scope.eveDtl.classifications===undefined) && !($scope.eveDtl.classifications[0].segment===undefined) && ($scope.eveDtl.classifications[0].segment.name==='Music')) {
+                var req = {
+                    method: "GET",
+                    url: "/artist",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    params: {
+                        'keyword': $scope.eveDtl._embedded.attractions[num].name
+                    }
+                };
+                $http(req).then(function (response) {
+                    if (!(response.data === undefined))
+                        $scope.arts = response.data;
+                    console.log(response);
+                },function () {
+                    $scope.err = true;
+                });
+            }
+        };
+        $scope.getImg = function(num){
+            var req = {
+                method: "GET",
+                url: "/imgs",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                params: {
+                    'q': $scope.eveDtl._embedded.attractions[num].name,
+                    'key': "YOUR_KEY",
+                    'imgSize': 'huge',
+                    'searchType': 'image',
+                    'cx': 'YOUR_CX_KEY',
+                    'num' : 8
+                }
+            };
+            $http(req).then(function (response) {
+                var data = response.data;
+                $scope.imgs.push({data,name:$scope.eveDtl._embedded.attractions[num].name});
+                console.log($scope.imgs);
+            },function () {
+                $scope.err = true;
+            });
+        };
+        $scope.getVenueMap =function(){
+            if(!($scope.eveDtl._embedded===undefined)&&!($scope.eveDtl._embedded.venues===undefined)) {
+                var lat = parseFloat($scope.eveDtl._embedded.venues[0].location.latitude);
+                var lon = parseFloat($scope.eveDtl._embedded.venues[0].location.longitude);
+                initMap(lat,lon);
+            }
+        };
+        $scope.getUpEves = function(){
+            if(!($scope.eveDtl._embedded===undefined)&&!($scope.eveDtl._embedded.venues===undefined)) {
+                var req = {
+                    method:"GET",
+                    url:"/upcomingEvents",
+                    headers:{
+                        'Content-Type' : 'application/json'
+                    },
+                    params: {
+                        'query' : $scope.eveDtl._embedded.venues[0].name,
+                        'apikey' : 'YOUR_KEY'
+                    }
+                };
+                $http(req).then(function (response) {
+                    $scope.upEves = response.data;
+                },function () {
+                    $scope.err = true;
+                });
+            }
+        };
+        $scope.toDetail = function(){
+            $scope.dtl = true;
+            $scope.btnCtl = true;
+
+        };
+        $scope.backToList = function(){
+            $scope.dtl = false;
+            $scope.btnCtl = true;
+        };
+        $scope.toFavorite = function(event,index){
+            $scope.$storage.likeList.push(event);
+            console.log($scope.$storage.likeList);
+            //$scope.favoriteList.push({'data':event,'index':index});
+            $scope.star[index] = true;
+        };
+        $scope.rmFavorite = function(eveID) {
+            var len = $scope.$storage.likeList.length;
+            if(!($scope.result0 === '')) {
+                var len0 = 0;
+                if (!($scope.result0.data._embedded === undefined) && !($scope.result0.data._embedded.events === undefined))
+                    len0 = $scope.result0.data._embedded.events.length;
+                //Delete star
+                if (!(len0 === 0)) {
+                    for (var i = 1; i <= len0; i++) {
+                        if ($scope.result0.data._embedded.events[i - 1].id === eveID)
+                            $scope.star[i] = false;
+                    }
+                }
+            }
+            //Delete element from likeList
+            for(var j = 0; j < len; j++){
+                if($scope.$storage.likeList[j].id === eveID) {
+                    $scope.$storage.likeList.splice(j, 1);
+                    break;
+                }
+            }
+        };
+        $scope.equalName = function(item){
+            if(!($scope.eveDtl._embedded===undefined) && !($scope.eveDtl._embedded.attractions===undefined)) {
+                var tmp1 = $scope.eveDtl._embedded.attractions[0].name;
+                var tmp2 = item.name;
+                return tmp1.toLowerCase() === tmp2.toLowerCase();
+            }
+        };
+        $scope.readCache = function(eveID){
+            if($scope.$storage.likeList.length === 0) return false;
+            for(var i = 0; i < $scope.$storage.likeList.length; i++){
+                if(eveID === $scope.$storage.likeList[i].id)
+                    return true;
+            }
+            return false;
+        };
+        $scope.query = function(searchText) {
+            var req = {
+                method : "GET",
+                url : "/items",
+                headers : {
+                    'Content-Type' : 'applicant/json'
+                },
+                params : {
+                    'searchText': searchText,
+                    'apikey' : "YOUR_KEY"
+                }
+            };
+            return $http(req).then(function(resp) {
+                // Map the response object to the data object.
+                if(!(resp.status === 200))
+                    $scope.err = true;
+                if(resp.data._embedded===undefined || resp.data._embedded.attractions===undefined)
+                    return [];
+                console.log(resp.data._embedded.attractions);
+                return resp.data._embedded.attractions;
+            });
+        };
+        //next
+    });
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY"></script>
+</body>
+</html>
